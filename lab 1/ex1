@@ -1,4 +1,4 @@
-'''#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 #include<codecvt>
 #include<fstream>
@@ -32,4 +32,4 @@ int main()
 	file.close();
 	file_out.close();
 	return 0;
-}'''
+}
