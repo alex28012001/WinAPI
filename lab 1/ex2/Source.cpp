@@ -7,7 +7,7 @@
 int main()
 {
 	std::locale loc(std::locale::classic(), new
-	std::codecvt_utf8<wchar_t>);
+		std::codecvt_utf8<wchar_t>);
 	setlocale(0, "");
 	std::ifstream file("karatkevich.txt");
 	if (!file.is_open())
@@ -37,11 +37,11 @@ int main()
 		{
 			++quantity_long;
 			file_out << it << "\n";
-		}	
+		}
 	}
 	file_out << "Quantity: " << quantity_long << "   Length: " << temp_long << "\n\n";
 
-	
+
 
 
 	int temp_short = temp_long;
@@ -56,7 +56,7 @@ int main()
 	file_out << "Short words: ";
 	for (auto it : vec)
 	{
-		if (it.length() == temp_short )
+		if (it.length() == temp_short)
 		{
 			++quantity_short;
 			file_out << it << "   ";
@@ -70,7 +70,7 @@ int main()
 	int length = 0;
 	for (auto it : vec)
 		length += it.length();
-	
+
 	file_out << "\nAverage length words: " << length / vec.size() << "\n";
 
 	return 0;
