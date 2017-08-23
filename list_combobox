@@ -1,0 +1,88 @@
+#include<windows.h>
+#include"resource.h"
+#include<string>
+BOOL CALLBACK DlgProc(HWND, UINT, WPARAM, LPARAM);
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevlnstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	HWND hWnd = CreateDialog(hInstance, MAKEINTRESOURCE(IDD_DIALOG1), NULL, DlgProc);
+	ShowWindow(hWnd, 1);
+
+	MSG msg;
+	while (GetMessage(&msg, 0, 0, 0))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+	return msg.wParam;
+}
+
+BOOL CALLBACK DlgProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
+{
+	wchar_t buf[20];
+	static HWND hbutton_1, hbutton_2,  hbutton_3, hbutton_4, hedit,hlist, hstatic,hcombobox;
+	switch (iMsg)
+	{
+	case WM_COMMAND:
+	{
+		
+		if (LOWORD(wParam) == IDC_BUTTON1)
+		{
+			wchar_t buf[50];
+			GetWindowText(hedit, buf,sizeof(buf));
+			SendMessage(hlist, LB_ADDSTRING, 0, LPARAM(buf));
+			int count = SendMessage(hlist, LB_GETCOUNT, 0, 0);
+			wchar_t buf2[15];
+			wsprintf(buf2, L"Count: %d", count);
+			SetWindowText(hstatic, buf2);
+		
+		}
+
+		else if (LOWORD(wParam) == IDC_BUTTON2)
+		{
+			SendMessage(hlist, LB_RESETCONTENT, 0, 0);
+		}
+
+		else if (LOWORD(wParam) == IDC_BUTTON3)
+		{
+			int index = SendMessage(hlist, CB_GETCURSEL, 0, 0);
+			SendMessage(hlist, LB_DELETESTRING, index, 0);
+		}
+
+		else if (LOWORD(wParam) == IDC_BUTTON4)
+		{
+			int index = SendMessage(hlist, LB_GETCURSEL, 0, 0);
+			wchar_t buf[20];
+			SendMessage(hlist, LB_GETTEXT, index,LPARAM(buf));
+
+				while (SendMessage(hcombobox, CB_FINDSTRING, -1, LPARAM(buf)) == -1)
+				{
+					SendMessage(hcombobox, CB_ADDSTRING, 0, LPARAM(buf));
+				}
+					
+		}
+	}break;
+
+
+
+	case WM_INITDIALOG:
+	{
+		hbutton_1 = GetDlgItem(hwnd, IDC_BUTTON1);
+		hbutton_2 = GetDlgItem(hwnd, IDC_BUTTON2);
+		hbutton_3 = GetDlgItem(hwnd, IDC_BUTTON3);
+		hedit = GetDlgItem(hwnd, IDC_EDIT1);
+		hlist = GetDlgItem(hwnd, IDC_LIST3);
+		hstatic = GetDlgItem(hwnd, IDC_STATIC1);
+		hcombobox = GetDlgItem(hwnd, IDC_COMBO6);
+		hbutton_4 = GetDlgItem(hwnd, IDC_BUTTON4);
+
+	}
+	return true;
+		
+			case WM_CLOSE:
+		DestroyWindow(hwnd);
+		PostQuitMessage(0);
+		return true;
+	}
+	return false;
+}
