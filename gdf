@@ -15,6 +15,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevlnstance, LPSTR lpCmdLine
 	MSG msg;
 	while (GetMessage(&msg, 0, 0, 0))
 	{
+		if (msg.message == WM_CHAR)
+		{
+			SendMessage(hWnd, msg.message, msg.wParam, msg.lParam);
+		}
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
@@ -43,25 +47,24 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 	}break;
 	
-	case WM_RBUTTONDOWN:
+	case WM_CHAR:
 	{
-		SendMessage(hEdit, WM_CUT, 0, 0);
+		if (wParam == 'x')
+		{
+			SendMessage(hEdit, WM_CUT, 0, 0);
+		}
+		else if (wParam == 'v')
+		{
+			SendMessage(hEd, WM_PASTE, 0, 0);
+		}
 	}break;
-
-	case WM_LBUTTONDOWN:
-	{
-		SendMessage(hEd, WM_PASTE, 0, 0);
-	}break;
-		
-
 	
-
-
+		
 	case WM_INITDIALOG:
 	{
 		hBUTOK = GetDlgItem(hwnd,IDOK);
 		hEd = GetDlgItem(hwnd, IDC_EDIT1);
-		hEdit = CreateWindowEx(NULL, L"EDIT", L"", WS_CHILD | WS_VISIBLE ,  20, 20, 300, 50, hwnd, (HMENU)ID_EDIT,hInst , NULL);
+		hEdit = CreateWindowEx(NULL, L"EDIT", L"", WS_CHILD | WS_VISIBLE ,  20, 20, 300, 20, hwnd, (HMENU)ID_EDIT,hInst , NULL);
 	}break;
 		
 		
