@@ -33,6 +33,8 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 	
 	static HWND hbar,hslider, hstatbar;
+	RECT rect;
+	static int pParts[3];
 	switch (iMsg)
 	{
 	case WM_COMMAND:
@@ -53,9 +55,13 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		SendMessage(hslider, TBM_SETRANGE, 0, MAKELPARAM(0, 255));
 		SendMessage(hslider, TBM_SETPOS, true, 50);
 		SendMessage(hslider, TBM_SETLINESIZE, 0,10);
-		SendMessage(hstatbar, SB_SIMPLE, true, 0);
-		SendMessage(hstatbar, SB_SETTEXT, 255, LPARAM(L"Lesha"));
-
+		SendMessage(hstatbar, SB_SIMPLE, false, 0);
+		//SendMessage(hstatbar, SB_SETTEXT, 255, LPARAM(L"Lesha"));
+		MoveWindow(hstatbar, 0, rect.bottom - 10, rect.right, 10, TRUE);
+		pParts[0] = 50;
+		pParts[1] = 100;
+		pParts[2] = -1;
+		SendMessage(hstatbar, SB_SETPARTS, 3, (LPARAM)pParts);
 	}
 
 	return true;
