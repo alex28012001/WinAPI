@@ -43,14 +43,12 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	static HWND hedit1, hedit2,hedit3, hbutlogin, hbutopen, hbutclear, hbut4, hbut5, hbutclear2, hbutpaste, hbut8, hlist, hedittemp, hbutdeletelist, hbutclearlist, hbutwrite, hstatic5,hcombobox,hbut12,hstatbar,hbut13;
 	static int lengthlist = 0;
 	std::wstring textLengthList;
-	std::map<std::wstring, std::wstring> dict;
+	static std::map<std::wstring, std::wstring> dict;
 	RECT rect;
 	static int pParts[3];
 	static OPENFILENAME openFile;
 	wchar_t szFileName[256];
 	wchar_t szFileTitle[100];
-
-	std::wstring text = L"Неизвестный текст";
 
 		
 	switch (iMsg)
@@ -67,7 +65,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 							   EnableWindow(hbutclear, 1);
 							   SendMessage(hstatbar, SB_SETTEXT, 0, LPARAM(alex::login.c_str()));
 							  // SendMessage(hstatbar, SB_SETTEXT, 1, LPARAM(buf));
-							   SendMessage(hstatbar, SB_SETTEXT, 1, LPARAM(L"Единство предмета речи — это тема"));
+							   SendMessage(hstatbar, SB_SETTEXT, 1, LPARAM(L"Р•РґРёРЅСЃС‚РІРѕ РїСЂРµРґРјРµС‚Р° СЂРµС‡Рё вЂ” СЌС‚Рѕ С‚РµРјР°"));
 							  
 						   }
 
@@ -75,7 +73,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 					   if (LOWORD(wParam) == IDC_BUTTON2)
 					   {
-						   SetWindowText(hedit1, L"Единство предмета речи — это тема высказывания. Тема — это смысловое ядро текста, конденсированное и обобщённое содержание текста. Понятие «содержание высказывания» связано с категорией ");				  
+						   SetWindowText(hedit1, L"Р•РґРёРЅСЃС‚РІРѕ РїСЂРµРґРјРµС‚Р° СЂРµС‡Рё вЂ” СЌС‚Рѕ С‚РµРјР° РІС‹СЃРєР°Р·С‹РІР°РЅРёСЏ. РўРµРјР° вЂ” СЌС‚Рѕ СЃРјС‹СЃР»РѕРІРѕРµ СЏРґСЂРѕ С‚РµРєСЃС‚Р°, РєРѕРЅРґРµРЅСЃРёСЂРѕРІР°РЅРЅРѕРµ Рё РѕР±РѕР±С‰С‘РЅРЅРѕРµ СЃРѕРґРµСЂР¶Р°РЅРёРµ С‚РµРєСЃС‚Р°. РџРѕРЅСЏС‚РёРµ В«СЃРѕРґРµСЂР¶Р°РЅРёРµ РІС‹СЃРєР°Р·С‹РІР°РЅРёСЏВ» СЃРІСЏР·Р°РЅРѕ СЃ РєР°С‚РµРіРѕСЂРёРµР№ ");				  
 					   }
 
 					   if (LOWORD(wParam) == IDC_BUTTON3)
@@ -109,7 +107,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					   {
 						   std::wofstream file("new_text.txt");
 						   if (!file.is_open())
-							   MessageBox(hwnd, L"Файл не найден", L"Информация", MB_OK);
+							   MessageBox(hwnd, L"Р¤Р°Р№Р» РЅРµ РЅР°Р№РґРµРЅ", L"РРЅС„РѕСЂРјР°С†РёСЏ", MB_OK);
 						   file.imbue(loc);
 						   wchar_t buf[255];
 						   SendMessage(hedit2, WM_GETTEXT, 255, (LPARAM)buf);
@@ -123,12 +121,12 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					   if (LOWORD(wParam) == IDC_BUTTON8)
 					   {
 						   ++lengthlist;
-						   wchar_t buf[20];
+						   wchar_t buf[100];
 						   int count_str = SendMessage(hlist, LB_GETCOUNT, 0, 0);
 						   
 							   SendMessage(hedit2, WM_COPY, 0, 0);
 							   SendMessage(hedittemp, WM_PASTE, 0, 0);
-							   SendMessage(hedittemp, WM_GETTEXT, 20, (LPARAM)buf);
+							   SendMessage(hedittemp, WM_GETTEXT, 100, (LPARAM)buf);
 							   SendMessage(hlist, LB_ADDSTRING, 0, (LPARAM)buf);
 							   SendMessage(hedittemp, EM_SETSEL, 0, -1);
 							   SendMessage(hedittemp, WM_CLEAR, 0, 0);
@@ -153,7 +151,13 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 					   if (LOWORD(wParam) == IDC_BUTTON10)
 					   {
+						   lengthlist = 0;
+						   textLengthList = std::to_wstring(lengthlist);
+						   SetWindowText(hstatic5, textLengthList.c_str());
+
 						   SendMessage(hlist, LB_RESETCONTENT, 0, 0);
+
+
 					   }
 
 
@@ -164,11 +168,11 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 						   std::wofstream file("list.txt");
 						   if (!file.is_open())
-							   MessageBox(hwnd, L"Файл не найден", L"Информация", MB_OK);
+							   MessageBox(hwnd, L"Р¤Р°Р№Р» РЅРµ РЅР°Р№РґРµРЅ", L"РРЅС„РѕСЂРјР°С†РёСЏ", MB_OK);
 						   file.imbue(loc);
 						   
 						   lengthlist = SendMessage(hlist, LB_GETCOUNT, 0, 0);
-						   wchar_t buf[200];
+						   wchar_t buf[10000];
 						   for (int i = 0; i < lengthlist; ++i)
 						   {	
 								SendMessage(hlist, LB_GETTEXT, i, (LPARAM)buf);
@@ -180,22 +184,23 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 					   if (LOWORD(wParam) == IDC_BUTTON12)
 					   {
-							  std::wstring word;
-							  std::wstring buf;
-							  SendMessage(hedit3, WM_GETTEXT, 255, (LPARAM)buf.c_str());
+							 std::wstring word;
+							 std::wstring buf;
+							 SendMessage(hedit3, WM_GETTEXT, 10000, (LPARAM)buf.c_str());
 							
 								  int index = SendMessage(hlist, LB_GETCURSEL, 0, 0);
 								  SendMessage(hlist, LB_GETTEXT, index, (LPARAM)word.c_str());
-								  dict.insert(std::pair<std::wstring, std::wstring>(word.c_str(), buf.c_str()));				   
+								  dict.insert(std::pair<std::wstring, std::wstring>(word.c_str(), buf.c_str()));		
+								  
 						  
 					   }
 
 					   if (LOWORD(wParam) == IDC_BUTTON13)
 					   {
-						   setlocale(0, "");
+						  // setlocale(0, "");
 						   std::wofstream file("dict.txt");
 						   if (!file.is_open())
-							   MessageBox(hwnd, L"Файл не найден", L"Информация", MB_OK);
+							   MessageBox(hwnd, L"Р¤Р°Р№Р» РЅРµ РЅР°Р№РґРµРЅ", L"РРЅС„РѕСЂРјР°С†РёСЏ", MB_OK);
 						   file.imbue(loc);
 
 						   for (auto it : dict)
@@ -203,8 +208,9 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 							   file << it.first.c_str() << "  " << it.second.c_str() << "\n";
 						   }
 
-
 						   file.close();
+						   
+						   
 					   }
 					   
 
@@ -233,10 +239,10 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 						  hbutwrite = GetDlgItem(hwnd, IDC_BUTTON11);
 						  hstatic5 = GetDlgItem(hwnd, IDC_STATIC5);
 						  hcombobox = GetDlgItem(hwnd, IDC_COMBO1); 
-						  SendMessage(hcombobox, CB_ADDSTRING, 0, (LPARAM)L"Значение");
-						  SendMessage(hcombobox, CB_ADDSTRING, 0, (LPARAM)L"Перевод");
-						  SendMessage(hcombobox, CB_ADDSTRING, 0, (LPARAM)L"Синоним");
-						  SendMessage(hcombobox, CB_ADDSTRING, 0, (LPARAM)L"Антоним");
+						  SendMessage(hcombobox, CB_ADDSTRING, 0, (LPARAM)L"Р—РЅР°С‡РµРЅРёРµ");
+						  SendMessage(hcombobox, CB_ADDSTRING, 0, (LPARAM)L"РџРµСЂРµРІРѕРґ");
+						  SendMessage(hcombobox, CB_ADDSTRING, 0, (LPARAM)L"РЎРёРЅРѕРЅРёРј");
+						  SendMessage(hcombobox, CB_ADDSTRING, 0, (LPARAM)L"РђРЅС‚РѕРЅРёРј");
 						  hedit3 = GetDlgItem(hwnd, IDC_EDIT2);
 						  hbut12 = GetDlgItem(hwnd, IDC_BUTTON12);
 						  hbut13 = GetDlgItem(hwnd, IDC_BUTTON13);
@@ -246,8 +252,8 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 						  pParts[0] = 200;
 						  pParts[1] = -1;
 						  SendMessage(hstatbar, SB_SETPARTS, 2, (LPARAM)pParts);
-						  SendMessage(hstatbar, SB_SETTEXT, 0, LPARAM(L"Неизвестный пользаватель"));
-						  SendMessage(hstatbar, SB_SETTEXT, 1, LPARAM(L"Неизвестный текст"));
+						  SendMessage(hstatbar, SB_SETTEXT, 0, LPARAM(L"РќРµРёР·РІРµСЃС‚РЅС‹Р№ РїРѕР»СЊР·Р°РІР°С‚РµР»СЊ"));
+						  SendMessage(hstatbar, SB_SETTEXT, 1, LPARAM(L"РќРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РµРєСЃС‚"));
 						 
 							
 						
@@ -293,11 +299,11 @@ BOOL CALLBACK DlgProc2(HWND hwnd, UINT iMsg2, WPARAM wParam, LPARAM lParam)
 								   SendMessage(hwnd, WM_CLOSE, 0, 0);
 							   }
 							   else
-								   MessageBox(hwnd, L"Данные введены неверно!", L"Информация", MB_OK);
+								   MessageBox(hwnd, L"Р”Р°РЅРЅС‹Рµ РІРІРµРґРµРЅС‹ РЅРµРІРµСЂРЅРѕ!", L"РРЅС„РѕСЂРјР°С†РёСЏ", MB_OK);
 						   }
 						   else
 						   {
-							   MessageBox(hwnd, L"Данные введены неверно!", L"Информация", MB_OK);
+							   MessageBox(hwnd, L"Р”Р°РЅРЅС‹Рµ РІРІРµРґРµРЅС‹ РЅРµРІРµСЂРЅРѕ!", L"РРЅС„РѕСЂРјР°С†РёСЏ", MB_OK);
 						   }
 					   }
 
